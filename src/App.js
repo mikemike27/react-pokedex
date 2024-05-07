@@ -1,25 +1,67 @@
 import './App.css';
 import Search from './Components/Search/Search';
 import Info from './Components/Info/Info';
+import { useState } from 'react';
 
 function App() {
 
+  let url;
+  const [pokeInfo, setPokeInfo] = useState({});
+  const [loaded, setLoaded] = useState(false);
+
+  function searchPokemon(event, name){
+    event.preventDefault();
+
+    //console.log(name);
+
+    if(name != ""){
+      
+      setLoaded(false);
+
+      url = `https://pokeapi.co/api/v2/pokemon/${name}`;
+      
+      
+      getPokeInfo();
+
+    }
+
+  }
+
+  async function getPokeInfo(){
+    
+    let response;
+    let json;
+
+    try{
+
+      response = await fetch(url);
+      json = await response.json();
+    }
+    catch(err){
+      console.log(err);
+    }
+    finally{
+
+      setPokeInfo(json);
+      setLoaded(true);
+    
+    }
+    //console.log(pokeInfo.sprites.front_default);
+  }
 
   return (
     <div className="App">
-      <Search />
-      <Info />
+      <Search searchPokemon={searchPokemon}/>
+      {
+        loaded &&
+        <Info pokeInfo={pokeInfo}/>
+      }
     </div>
   );
 }
 
 export default App;
 
-//appjs is the heart
-//search has an inputbox for user to enter pokemon name. when user click the submit button. it set the name state,
-//we are going to use useEffect, in the dependecies it's looking at the name state. after setting the name state, useEffect is going to call fetch pokeapi to fetch the data
-//after fetching the data, it will pass the info to the info component
-//inside the info component, it will have all the state. 
 
 //search bar to search for pokemon name, it should a separate component
 //when user type a pokemon name and submit, it will call fetch to the pokeapi to fetch the data
@@ -29,6 +71,7 @@ export default App;
 //<name>
 //<pokemon id>
 //Type <type>
-//Weakness <weakness>
 //Abilities <abilities>
-//Moves: Pound, Leaf Blades, Flamethrower
+//Hp
+//Atk
+//Def
