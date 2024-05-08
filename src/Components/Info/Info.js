@@ -1,3 +1,5 @@
+import './Info.css';
+
 import { useEffect, useState } from "react";
 
 function Info({pokeInfo}){
@@ -11,7 +13,7 @@ function Info({pokeInfo}){
     const [defense, setDefense] = useState(0);
 
     function capitaliseLetter(str){
-        return str.charAt(0).toUpperCase() + str.slice(1);
+        return str?.charAt(0).toUpperCase() + str?.slice(1);
     }
 
     useEffect(()=>{
@@ -20,15 +22,15 @@ function Info({pokeInfo}){
         
         setId(pokeInfo?.id);
         
-        setType(capitaliseLetter(pokeInfo?.types[0].type.name));
+        setType(capitaliseLetter(pokeInfo?.types?.[0].type.name));
         
-        setAbilities(capitaliseLetter(pokeInfo?.abilities[0].ability.name));
+        setAbilities(capitaliseLetter(pokeInfo?.abilities?.[0].ability.name));
         
-        setHp(pokeInfo?.stats[0].base_stat);
+        setHp(pokeInfo?.stats?.[0].base_stat);
         
-        setAttack(pokeInfo?.stats[1].base_stat);
+        setAttack(pokeInfo?.stats?.[1].base_stat);
         
-        setDefense(pokeInfo?.stats[2].base_stat);
+        setDefense(pokeInfo?.stats?.[2].base_stat);
         //console.log(pokeInfo);
     },[pokeInfo]);
 

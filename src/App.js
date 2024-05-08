@@ -1,13 +1,23 @@
 import './App.css';
 import Search from './Components/Search/Search';
 import Info from './Components/Info/Info';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 function App() {
 
-  let url;
+  const [url, setUrl] = useState("");
   const [pokeInfo, setPokeInfo] = useState({});
   const [loaded, setLoaded] = useState(false);
+
+  useMemo(()=>{
+
+    setLoaded(false);
+
+    if(url != ""){
+      getPokeInfo();
+    }
+
+  },[url]);
 
   function searchPokemon(event, name){
     event.preventDefault();
@@ -16,12 +26,10 @@ function App() {
 
     if(name != ""){
       
-      setLoaded(false);
+      let url = `https://pokeapi.co/api/v2/pokemon/${name}`;
+      setUrl(url);
 
-      url = `https://pokeapi.co/api/v2/pokemon/${name}`;
-      
-      
-      getPokeInfo();
+      //getPokeInfo();
 
     }
 
@@ -33,9 +41,11 @@ function App() {
     let json;
 
     try{
-
+      
       response = await fetch(url);
+      console.log(response);
       json = await response.json();
+      console.log(json);
     }
     catch(err){
       console.log(err);
