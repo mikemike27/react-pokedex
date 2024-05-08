@@ -43,9 +43,7 @@ function App() {
     try{
       
       response = await fetch(url);
-      console.log(response);
       json = await response.json();
-      console.log(json);
     }
     catch(err){
       console.log(err);
