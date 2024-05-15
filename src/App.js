@@ -8,6 +8,23 @@ function App() {
   const [url, setUrl] = useState("");
   const [pokeInfo, setPokeInfo] = useState({});
   const [loaded, setLoaded] = useState(false);
+  const [name, setName] = useState("");
+
+
+  const generateUrl = ()=>{
+    console.log("generating url: , "+name);
+    setUrl(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    //return url;
+  }
+  
+  const cacheUrl = useMemo(()=>{
+    //console.log("generating url useMemo");
+    generateUrl();
+    //console.log(x);
+    return url;
+  },[name]);
+
+  
 
   useMemo(()=>{
 
@@ -19,15 +36,17 @@ function App() {
 
   },[url]);
 
-  function searchPokemon(event, name){
+  function searchPokemon(event, pokeName){
     event.preventDefault();
 
     //console.log(name);
 
-    if(name != ""){
-      
-      let url = `https://pokeapi.co/api/v2/pokemon/${name}`;
-      setUrl(url);
+    if(pokeName != ""){
+      setName(pokeName);
+      //let url = cacheUrl;
+      console.log("dada " + cacheUrl);
+      setUrl(cacheUrl);
+      setLoaded(true);
 
       //getPokeInfo();
 
